@@ -1,0 +1,61 @@
+# codeindex configuration
+# This file defines how the project is indexed for AI agents.
+# Commit this file to git for cross-machine portability.
+
+project:
+  name: grepai
+  description: 'grepai - TODO: Add description'
+  languages:
+  - typescript
+  frameworks: []
+infrastructure:
+  ci_cd:
+  - GitHub Actions
+sources:
+- language: typescript
+  exclude:
+  - node_modules/**
+  - dist/**
+  - '*.spec.ts'
+  - '*.test.ts'
+areas:
+  authentication:
+    description: User authentication, login, sessions
+    patterns:
+    - '**/*auth*'
+    - '**/*login*'
+    - '**/*session*'
+    keywords:
+    - login
+    - logout
+    - authenticate
+    - token
+  api:
+    description: API endpoints and services
+    patterns:
+    - '**/api/**'
+    - '**/*.service.ts'
+    - '**/services/**'
+    keywords:
+    - http
+    - api
+    - endpoint
+  core:
+    description: 'Core application logic - TODO: Refine this area'
+    patterns:
+    - '**/app/**'
+    - '**/src/**'
+    - '**/lib/**'
+  utils:
+    description: Utility functions
+    patterns:
+    - docs/src/utils/**
+indexing:
+  exclude:
+  - '**/*.min.js'
+  - '**/*.map'
+  - '**/migrations/**'
+  - '**/seeds/**'
+  - '**/__tests__/**'
+  - '**/*.spec.*'
+  - '**/*.test.*'
