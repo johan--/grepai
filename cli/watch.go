@@ -360,7 +360,7 @@ func runInitialScan(ctx context.Context, idx *indexer.Indexer, scanner *indexer.
 			printProgress(info.Current, info.Total, info.CurrentFile)
 		})
 		// Clear progress line
-		fmt.Print("\r" + strings.Repeat(" ", 80) + "\r")
+		fmt.Print("\r\033[K")
 	} else {
 		stats, err = idx.IndexAllWithProgress(ctx, nil)
 	}
@@ -631,5 +631,6 @@ func printProgress(current, total int, filePath string) {
 	}
 
 	// Print with carriage return to overwrite previous line
-	fmt.Printf("\rIndexing [%s] %3.0f%% (%d/%d) %s", bar, percent, current, total, displayPath)
+	// \033[K clears from cursor to end of line (prevents leftover chars from longer filenames)
+	fmt.Printf("\rIndexing [%s] %3.0f%% (%d/%d) %s\033[K", bar, percent, current, total, displayPath)
 }

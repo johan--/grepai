@@ -156,9 +156,28 @@ func DefaultConfig() *Config {
 		Trace: TraceConfig{
 			Mode: "fast",
 			EnabledLanguages: []string{
-				".go", ".js", ".ts", ".jsx", ".tsx", ".py", ".php",
+				// Go
+				".go",
+				// JavaScript/TypeScript/Node
+				".js", ".ts", ".jsx", ".tsx", ".mjs", ".mts",
+				// Python
+				".py",
+				// PHP
+				".php",
+				// Ruby/Rails
+				".rb", ".erb",
+				// Elixir/Phoenix
+				".ex", ".exs",
+				// C/C++
 				".c", ".h", ".cpp", ".hpp", ".cc", ".cxx",
-				".rs", ".zig", ".cs",
+				// Rust
+				".rs",
+				// Zig
+				".zig",
+				// C#
+				".cs",
+				// Java
+				".java",
 			},
 			ExcludePatterns: []string{
 				"*_test.go",
@@ -173,21 +192,60 @@ func DefaultConfig() *Config {
 			CheckOnStartup: false, // Opt-in by default for privacy
 		},
 		Ignore: []string{
+			// Version control & tools
 			".git",
 			".grepai",
+			".kiro",
+			".cursor",
+
+			// IDE/Editor
+			".idea",
+			".vscode",
+
+			// JavaScript/Node
 			"node_modules",
-			"vendor",
-			"bin",
-			"dist",
+
+			// Python
 			"__pycache__",
 			".venv",
 			"venv",
-			".idea",
-			".vscode",
+
+			// Go
+			"vendor",
+			"bin",
+
+			// Rust
 			"target",
+
+			// Zig
 			".zig-cache",
 			"zig-out",
+
+			// Angular
+			".angular",
+			"dist",
+
+			// Rails
+			"log",
+			"tmp",
+			"storage",
+			".bundle",
+			"public/assets",
+			"public/packs",
+
+			// Elixir/Phoenix
+			"_build",
+			"deps",
+			".elixir_ls",
+
+			// General
+			"logs",
 			"qdrant_storage",
+
+			// Test files
+			"*.jest.ts",
+			"*.spec.ts",
+			"*.test.ts",
 		},
 	}
 }

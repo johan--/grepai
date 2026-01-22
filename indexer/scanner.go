@@ -67,7 +67,6 @@ var SupportedExtensions = map[string]bool{
 	".zsh":    true,
 	".yaml":   true,
 	".yml":    true,
-	".json":   true,
 	".xml":    true,
 	".md":     true,
 	".txt":    true,

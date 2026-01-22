@@ -164,10 +164,110 @@ grepai trace callees "ProcessOrder" --json
 grepai trace graph "ValidateToken" --depth 3 --json
 ```
 
-### Workflow
+### Practical Workflows
 
-1. Start with `grepai search` to find relevant code
-2. Use `grepai trace` to understand function relationships
-3. Use `Read` tool to examine files from results
-4. Only use Grep for exact string searches if needed
+#### Debugging a Bug
+
+```bash
+# 1. Find where the error might originate
+grepai search "null pointer in user profile"
+
+# 2. Trace callers to find the entry point
+grepai trace callers "getUserProfile" --json
+
+# 3. Read the relevant files from results
+```
+
+#### Refactoring Safely
+
+```bash
+# 1. Find all usages of the thing you're changing
+grepai trace callers "OldServiceName" --json
+
+# 2. Find similar patterns to maintain consistency
+grepai search "services that follow the repository pattern"
+
+# 3. After refactoring, verify nothing was missed
+grepai search "references to old method name"
+```
+
+#### Onboarding to Unfamiliar Code
+
+```bash
+# Understand entry points
+grepai search "main application bootstrap"
+grepai search "API route definitions"
+
+# Understand data flow
+grepai search "how user data flows through the system"
+```
+
+### Output Flags
+
+| Flag | Purpose |
+|------|---------|
+| `-n 5` | Limit to top 5 results |
+| `--json` | Machine-readable output |
+| `--json --compact` | Minimal JSON (saves ~80% tokens for AI agents) |
+
+## AI Tool Integration
+
+### Quick Setup
+
+Run in any project with a `.grepai/` folder:
+
+```bash
+grepai agent-setup                # Add grepai instructions to steering docs
+grepai agent-setup --with-subagent  # Also create Claude Code deep-explore agent
+```
+
+This auto-detects and updates:
+- `.cursor/rules`, `.cursorrules` (Cursor)
+- `.windsurfrules` (Windsurf)
+- `CLAUDE.md` (Claude Code)
+- `GEMINI.md` (Gemini)
+- `AGENTS.md` (Generic)
+
+### Manual Integration
+
+#### Option 1: Steering Doc (CLAUDE.md, .cursorrules, etc.)
+
+Add to your project's AI steering file:
+
+```markdown
+## grepai - Semantic Code Search
+
+Use `grepai search` INSTEAD OF grep/find for:
+- Understanding what code does or where functionality lives
+- Finding implementations by intent (e.g., "authentication logic")
+- Exploring unfamiliar parts of the codebase
+
+Use standard grep/glob ONLY for exact text matching.
+
+### Commands
+
+# Semantic search
+grepai search "error handling for API requests" --json --compact
+
+# Call graph: who calls this?
+grepai trace callers "functionName" --json
+
+# Call graph: what does this call?
+grepai trace callees "functionName" --json
+```
+
+#### Option 2: Skill (Claude Code)
+
+Copy `.claude/skills/grepai/` to your project or `~/.claude/skills/` for global access. The skill enforces grepai usage and provides detailed guidance.
+
+#### Option 3: Subagent (Claude Code)
+
+Run `grepai agent-setup --with-subagent` to create `.claude/agents/deep-explore.md` - a specialized agent for deep codebase exploration using grepai.
+
+### Best Practices for AI Integration
+
+1. **Always use `--json --compact`** - reduces token usage by ~80%
+2. **Use English queries** - embedding models are English-trained
+3. **Describe intent, not implementation** - "handles user login" not "func Login"
+4. **Combine with trace** - search finds code, trace shows relationships
 

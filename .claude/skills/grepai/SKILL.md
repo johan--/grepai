@@ -97,6 +97,44 @@ grepai search "HandleRequest"  # Use Grep for exact matches
 3. **Use `Read` tool** to examine files from search results
 4. **Use `Grep`** only for exact string searches if needed
 
+## Practical Workflows
+
+### Debugging a Bug
+
+```bash
+# 1. Find where the error might originate
+grepai search "null pointer in user profile" --json --compact
+
+# 2. Trace callers to find the entry point
+grepai trace callers "getUserProfile" --json
+
+# 3. Read the relevant files from results
+```
+
+### Refactoring Safely
+
+```bash
+# 1. Find all usages before changing
+grepai trace callers "OldServiceName" --json
+
+# 2. Find similar patterns for consistency
+grepai search "services using repository pattern" --json --compact
+
+# 3. After refactoring, verify completeness
+grepai search "references to old method" --json --compact
+```
+
+### Understanding Unfamiliar Code
+
+```bash
+# Entry points
+grepai search "main application bootstrap" --json --compact
+grepai search "API route definitions" --json --compact
+
+# Data flow
+grepai search "how user data flows through system" --json --compact
+```
+
 ## Fallback
 
 If grepai fails (not running, index unavailable, or errors), fall back to standard Grep/Glob tools. Common issues:
